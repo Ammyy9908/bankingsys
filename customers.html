@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking System</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+<body>
+    <header>
+        <a href="/"><span class="app_name">Banking System</span></a>
+    </header>
+    
+    <div class="modal_wrapper">
+        <div class="modal">
+            
+            <div class="customer__info">
+                <h1 class="person_name"></h1>
+            <h2 class="balance"></h2>
+            </div>
+           <div class="form">
+            <form action="">
+                <div class="form__control">
+                    <label for="from">Sender Account Number</label>
+                    <input type="text" placeholder="From" id="from" readonly>
+                </div>
+                <div class="form__control">
+                    <label for="to">Recpient Account Number</label>
+                    <input type="text" placeholder="To" id="to" autocomplete="off">
+                </div>
+                <div class="form__control">
+                    <label for="amount">Amount to transfer:</label>
+                    <input type="text" placeholder="amount" id="amount" autocomplete="off">
+                </div>
+                <div class="form__control">
+                    <button type="submit" href="/transfer.html" class="person_transaction_btn">Transfer Money</button>
+                </div>
+            </form>
+           </div>
+            
+        </div>
+    </div>
+    <!--Modal New User-->
+    <div class="new_modal_wrapper">
+        <div class="user_modal">
+            <form id="new_user">
+                <div class="form__control">
+                    <label for="name">Name</label>
+                    <input type="text" placeholder="Your name" id="name" autocomplete="off">
+                </div>
+                <div class="form__control">
+                    <label for="email">Email</label>
+                    <input type="email" placeholder="Email" id="email" autocomplete="off">
+                </div>
+                <div class="form__control">
+                    <label for="open_balance">Initial Balance:</label>
+                    <input type="text" placeholder="Initial Balance" id="intitial" autocomplete="off" value="0">
+                </div>
+                <div class="form__control">
+                    <button type="submit" href="/transfer.html" class="person_transaction_btn">Add User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!--Fab Button to add a new customer-->
+        <button class="fab_btn_add"><i class="material-icons new_user">add</i></button>
+        <div class="container">
+            <h1>All customers</h1>
+            <div class="customers">
+                
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+        function getCustomers(){
+            fetch('http://localhost:5001/users').then((response)=>{
+                return response.json()
+            })
+            .then((data)=>{
+                console.log(data)
+                data.map((item)=>{
+                    
+                    document.querySelector('.customers').innerHTML+=`
+                    <div class="customerCard">
+                    <h4>${item.name}</h4>
+                    <h5>${item.email}</h5>
+                    <h6>Account Number ${item.account_number}</h6>
+                    <h6>&#8377 ${item.balance}</h6>
+                    <button class="view_transaction_btn" id=${item._id}>View Transactions</button>
+                </div>
+                    `
+                })
+                handleTransactionClick();
+
+
+
+                 // Handle Click on indivdual elements
+
+                     const cards = document.querySelectorAll('.customerCard');
+                        Array.from(cards).map((item)=>{
+                            item.addEventListener('click',(e)=>{
+                                if(e.target.classList.contains("customerCard")){
+                                    console.log(e.target.children[1].textContent);
+                                    document.querySelector('.container').style.display="none";
+                                    document.querySelector('.modal_wrapper').style.display = "flex";
+                                    document.querySelector('.person_name').textContent = e.target.children[0].textContent;
+                                    document.querySelector('.balance').textContent = e.target.children[1].textContent;
+                                    document.querySelector('#from').value = e.target.children[2].textContent.replace("Account Number ","");
+                                }
+                            })
+                        })
+            })
+            .catch((e)=>{
+                console.log(e.message);
+            })
+        }
+
+        getCustomers()
+
+
+
+        // handle view transaction button
+
+
+        const handleTransactionClick = ()=>{
+            const btns = document.querySelectorAll('.view_transaction_btn');
+                Array.from(btns).forEach((item)=>{
+                    item.addEventListener('click',(e)=>{
+                        const id = e.target.id;
+                        document.location.href=`transaction.html#${id}`;
+                    })
+                })
+        }
+
+        
+       
+
+        
+    </script>
+    <script src="./js/transfer.js"></script>
+    <script src="./js/new_user.js"></script>
+</body>
+</html>
