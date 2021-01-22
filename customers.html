@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Banking System</title>
+    <title>Banking System-All customers</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
     <link rel="stylesheet" href="./styles/styles.css">
@@ -67,7 +67,7 @@
     <!--Fab Button to add a new customer-->
         <button class="fab_btn_add"><i class="material-icons new_user">add</i></button>
         <div class="container">
-            <h1>All customers</h1>
+            <h1 class="customers_head">loading ....</h1>
             <div class="customers">
                 
             </div>
@@ -81,7 +81,11 @@
             })
             .then((data)=>{
                 console.log(data)
+                if(data){
+                    document.querySelector('.customers_head').textContent = 'All customers';
+                }
                 data.map((item)=>{
+
                     
                     document.querySelector('.customers').innerHTML+=`
                     <div class="customerCard">

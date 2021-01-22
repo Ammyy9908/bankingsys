@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>All transactions</h1>
+        <h1 class="user_transaction_head">Loading ....</h1>
         <div class="result">
             <table class="transactions">
                 <tr>
@@ -39,6 +39,9 @@
             const r = await axios.get(`https://bankingsystemgrid.herokuapp.com/transaction/${getID()}`);
             if(r.status===200){
                 console.log(r.data.userTransaction);
+                console.log(r.data);
+                document.title = r.data.user+' Transactions';
+                document.querySelector('.user_transaction_head').textContent = r.data.user+' Transactions';
                 if(r.data.userTransaction.length>0){
                     r.data.userTransaction.map((item)=>{
                         document.querySelector('table').innerHTML+=`
