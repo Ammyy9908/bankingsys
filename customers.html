@@ -76,7 +76,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
         function getCustomers(){
-            fetch('http://localhost:5001/users').then((response)=>{
+            fetch('https://bankingsystemgrid.herokuapp.com/users').then((response)=>{
                 return response.json()
             })
             .then((data)=>{
